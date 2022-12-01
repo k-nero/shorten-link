@@ -3,15 +3,16 @@ const router = express.Router();
 const isUrl = require('../utils/validate.js');
 const randomID = require('../utils/randomId.js');
 const Link = require('../models/link.js');
+const authenticate = require("../middleware/authenticate");
+const User = require("../models/user");
 
 
-router.post('/short', async function(req, res, next)
+router.post('/short',authenticate , async function(req, res, next)
 {
     try
     {
         const originalUrl = req.body.originalUrl;
         const description = req.body.description;
-        console.log(req.body);
         if(await Link.findOne({originalUrl: originalUrl}))
         {
             res.status(400).json({status: 'error', message: 'URL already exists'});
@@ -36,10 +37,10 @@ router.post('/short', async function(req, res, next)
             description: description,
         }
         let link = await Link.create(payload);
+        console.log(link._id);
         if(req.user)
         {
-            req.user.links.push(link);
-            req.user.save();
+           await User.findByIdAndUpdate(req.user._id, {$push: {links: link._id}}, {new: true});
         }
         res.status(200).json({status: 'success', data: link});
     }
