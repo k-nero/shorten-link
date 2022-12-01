@@ -42,6 +42,7 @@ router.post('/register', async function(req, res, next)
         if(req.body.password.length < 8)
         {
             res.status(401).json({status: 'error', message: 'Password must be at least 8 characters'});
+            return;
         }
         let encryptedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null);
         let payload = {

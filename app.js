@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // cross-origin resource sharing
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5001');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type, Accept');
     next();
