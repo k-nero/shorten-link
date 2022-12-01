@@ -3,8 +3,6 @@ const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
-const Link = require('../models/link.js');
-
 /* GET users listing. */
 router.get('/', function(req, res, next)
 {
@@ -31,7 +29,7 @@ router.post('/login', async function(req, res, next)
     }
     catch(err)
     {
-        res.status(500).json({status: 'error', data: err.message});
+        res.status(500).json({status: 'error', message: err.message});
     }
 });
 
@@ -63,7 +61,7 @@ router.post('/register', async function(req, res, next)
     }
     catch(err)
     {
-        res.status(500).json({status: 'error', data: err.message});
+        res.status(500).json({status: 'error', message: err.message});
     }
 });
 
