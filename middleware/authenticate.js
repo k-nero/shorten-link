@@ -8,7 +8,6 @@ const verifyToken = (token) =>
         {
             if(err)
             {
-                console.log(err);
                 return rej();
             }
             return res(user);
@@ -20,15 +19,13 @@ const authenticate = async (req, res, next) =>
 {
     if(!req.headers.authorization)
     {
-        return res
-            .status(400)
-            .send({message: "Authorization token was not provided"});
+         res.status(400).send({message: "Authorization token was not provided"});
+         return;
     }
     if(!req.headers.authorization.startsWith("Bearer "))
     {
-        return res.status(400).send({
-            message: "Authorization token was not provided or was not valid",
-        });
+         res.status(400).send({message: "Authorization token was not provided or was not valid"});
+         return;
     }
     const token = req.headers.authorization.split(" ")[1];
     let user;
@@ -38,9 +35,8 @@ const authenticate = async (req, res, next) =>
     }
     catch(err)
     {
-        return res.status(400).send({
-            message: "Authorization token was not provided or was not valid",
-        });
+         res.status(400).send({message: "Authorization token was not provided or was not valid"});
+         return
     }
     req.user = user.user;
     next();

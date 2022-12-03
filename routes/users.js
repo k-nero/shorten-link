@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/user.js');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const authenticate = require("../middleware/authenticate");
 /* GET users listing. */
 router.get('/', function(req, res, next)
 {
@@ -65,14 +66,14 @@ router.post('/register', async function(req, res, next)
     }
 });
 
-router.post('/getLinks', async function(req, res, next)
+router.get('/getLinks',authenticate ,async function(req, res, next)
 {
     try
     {
         let payload = {
             userId : req.user._id,
         };
-        let links = await User.find({userId: payload.userId}).populate('links');
+        let links = await User.findById(payload.userId).populate('links');
         res.status(200).json({status: 'success', data: links});
     }
     catch(err)

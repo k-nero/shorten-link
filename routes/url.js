@@ -37,7 +37,6 @@ router.post('/short',authenticate , async function(req, res, next)
             description: description,
         }
         let link = await Link.create(payload);
-        console.log(link._id);
         if(req.user)
         {
            await User.findByIdAndUpdate(req.user._id, {$push: {links: link._id}}, {new: true});
