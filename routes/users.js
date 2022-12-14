@@ -5,12 +5,12 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 const authenticate = require("../middleware/authenticate");
 /* GET users listing. */
-router.get('/', function(req, res, next)
+router.get('/', function(req, res)
 {
     res.send('respond with a resource');
 });
 
-router.post('/login', async function(req, res, next)
+router.post('/login', async function(req, res)
 {
     try
     {
@@ -34,7 +34,7 @@ router.post('/login', async function(req, res, next)
     }
 });
 
-router.post('/register', async function(req, res, next)
+router.post('/register', async function(req, res)
 {
     try
     {
@@ -66,7 +66,7 @@ router.post('/register', async function(req, res, next)
     }
 });
 
-router.get('/getLinks',authenticate ,async function(req, res, next)
+router.get('/getLinks',authenticate ,async function(req, res)
 {
     try
     {

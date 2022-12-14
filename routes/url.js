@@ -7,7 +7,7 @@ const authenticate = require("../middleware/authenticate");
 const User = require("../models/user");
 
 
-router.post('/short',authenticate , async function(req, res, next)
+router.post('/short',authenticate , async function(req, res)
 {
     try
     {
@@ -49,7 +49,7 @@ router.post('/short',authenticate , async function(req, res, next)
     }
 });
 
-router.post('/custom-url', async function(req, res, next)
+router.post('/custom-url', async function(req, res)
 {
     try
     {

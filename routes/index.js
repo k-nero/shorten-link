@@ -2,12 +2,13 @@ const express = require('express');
 const Link = require("../models/link");
 const router = express.Router();
 
-router.get('/:urlId', async function(req, res, next)
+router.get('/:urlId', async function(req, res)
 {
     try
     {
         const {urlId} = req.params;
-        const link = await Link.findOne({urlId: urlId});
+        let link;
+        link = await Link.findOne({urlId: urlId});
         if(!link)
         {
             res.render('404.hbs', {title: '404 Not Found'});
