@@ -4,9 +4,9 @@ const verifyToken = (token) =>
 {
     return new Promise((res, rej) =>
     {
-        jwt.verify(token, process.env.JWT_SECRET, function(err, user)
+        jwt.verify(token, process.env.JWT_SECRET, function (err, user)
         {
-            if(err)
+            if (err)
             {
                 return rej();
             }
@@ -15,30 +15,26 @@ const verifyToken = (token) =>
     });
 };
 
-const authenticate = async (req, res, next) =>
-{
-    if(!req.headers.authorization)
-    {
-         res.status(400).send({message: "Authorization token was not provided"});
-         return;
-    }
-    if(!req.headers.authorization.startsWith("Bearer "))
-    {
-         res.status(400).send({message: "Authorization token was not provided or was not valid"});
-         return;
-    }
+const authenticate = async (req, res, next) => {
     const token = req.headers.authorization.split(" ")[1];
-    let user;
-    try
+    if(token !== "null")
     {
-        user = await verifyToken(token);
+        if(token.iat + 1440 * 60 < Date.now() / 1000)
+        {
+            res.status(400).send({message: "Authorization token was expired or was not valid"});
+            return;
+        }
+        let user;
+        try
+        {
+            user = await verifyToken(token);
+        } catch (err)
+        {
+            res.status(400).send({message: "Authorization token was expired or was not valid"});
+            return;
+        }
+        req.user = user.user;
     }
-    catch(err)
-    {
-         res.status(400).send({message: "Authorization token was not provided or was not valid"});
-         return
-    }
-    req.user = user.user;
     next();
 };
 

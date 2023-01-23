@@ -18,15 +18,16 @@ router.post('/login', async function(req, res)
             username: req.body.username.trim(),
             password: req.body.password.trim()
         };
-        let user = await User.findOne({username: payload.username});
+        let user;
+        user = await User.findOne({username: payload.username});
         let validPassword = bcrypt.compareSync(payload.password, user.password);
         if(!user || !validPassword)
         {
             res.status(401).json({status: 'error', message: 'Invalid username or password'});
             return;
         }
-        const token = jwt.sign({user}, process.env.JWT_SECRET, {algorithm: 'HS256'}, {expiresIn: '1440h'});
-        res.status(200).json({status: 'success', data: {token, user}});
+        const token = jwt.sign({user}, process.env.JWT_SECRET, {algorithm: 'HS256', expiresIn: '1440h'}, {});
+        res.status(200).json({status: 'success', data: token});
     }
     catch(err)
     {
@@ -57,8 +58,8 @@ router.post('/register', async function(req, res)
             return;
         }
         let user = await User.create(payload);
-        const token = jwt.sign({user}, process.env.JWT_SECRET, {algorithm: 'HS256'}, {expiresIn: '1440h'});
-        res.status(200).json({status: 'success', data: {token, user}});
+        const token = jwt.sign({user}, process.env.JWT_SECRET, {algorithm: 'HS256',expiresIn: '1440h'},{} );
+        res.status(200).json({status: 'success', data: token});
     }
     catch(err)
     {
@@ -75,6 +76,23 @@ router.get('/getLinks',authenticate ,async function(req, res)
         };
         let links = await User.findById(payload.userId).populate('links');
         res.status(200).json({status: 'success', data: links});
+    }
+    catch(err)
+    {
+        res.status(500).json({status: 'error', data: err.message});
+    }
+});
+
+router.get("/getUserInfo", authenticate, async function(req, res)
+{
+    try
+    {
+        let payload = {
+            userId : req.user._id,
+        };
+        let user
+        user = await User.findById(payload.userId);
+        res.status(200).json({status: 'success', data: user});
     }
     catch(err)
     {

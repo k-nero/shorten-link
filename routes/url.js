@@ -56,11 +56,7 @@ router.post('/custom-url', async function(req, res)
         const originalUrl = req.body.originalUrl;
         const urlId = req.body.urlId;
         const description = req.body.description;
-        if(await Link
-            .findOne({
-                originalUrl: originalUrl,
-                urlId: urlId
-            }))
+        if(await Link.findOne({originalUrl: originalUrl, urlId: urlId}))
         {
             res.status(400).json({status: 'error', message: 'URL already exists'});
             return;
@@ -93,6 +89,57 @@ router.post('/custom-url', async function(req, res)
 
     }
     catch(err)
+    {
+        res.status(500).json({status: 'error', message: err.message});
+    }
+});
+
+router.post("/updateLink", authenticate, async function(req, res)
+{
+    try
+    {
+        const urlId = req.body.urlId;
+        const newOriginalUrl = req.body.originalUrl;
+        let link;
+        link = await Link.findOne({urlId: urlId});
+        if(link)
+        {
+            link.orginalUrl = newOriginalUrl;
+            link.save();
+        }
+        res.status(200).json({status: 'success', data: link});
+    }
+    catch (err)
+    {
+        res.status(500).json({status: 'error', message: err.message});
+    }
+});
+
+router.post("/deleteLink", authenticate, async function(req, res)
+{
+    try
+    {
+        const urlId = req.body.urlId;
+        const userId = req.user._id;
+        let link;
+        link = await Link.findOne({urlId: urlId});
+        let user;
+        user = await User.findOne({_id: userId});
+        if(user)
+        {
+            if(user.links.includes(link._id))
+            {
+                user.links.pull(link._id);
+                user.save();
+            }
+        }
+        if(link)
+        {
+            link.delete();
+        }
+        res.status(200).json({status: 'success', data: link});
+    }
+    catch (err)
     {
         res.status(500).json({status: 'error', message: err.message});
     }
