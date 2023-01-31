@@ -13,6 +13,11 @@ router.post('/short',authenticate , async function(req, res)
     {
         const originalUrl = req.body.originalUrl;
         const description = req.body.description;
+        if(!originalUrl)
+        {
+            res.status(400).json({status: 'error', message: 'URL is required'});
+            return;
+        }
         if(await Link.findOne({originalUrl: originalUrl}))
         {
             res.status(400).json({status: 'error', message: 'URL already exists'});
@@ -100,13 +105,9 @@ router.post("/updateLink", authenticate, async function(req, res)
     {
         const urlId = req.body.urlId;
         const newOriginalUrl = req.body.originalUrl;
+        const newDescription = req.body.description;
         let link;
-        link = await Link.findOne({urlId: urlId});
-        if(link)
-        {
-            link.orginalUrl = newOriginalUrl;
-            link.save();
-        }
+        link = await Link.findOneAndUpdate({urlId: urlId}, {originalUrl: newOriginalUrl, description: newDescription}, {new: true})
         res.status(200).json({status: 'success', data: link});
     }
     catch (err)
@@ -122,7 +123,7 @@ router.post("/deleteLink", authenticate, async function(req, res)
         const urlId = req.body.urlId;
         const userId = req.user._id;
         let link;
-        link = await Link.findOne({urlId: urlId});
+        link = await Link.findOneAndDelete({urlId: urlId})
         let user;
         user = await User.findOne({_id: userId});
         if(user)
@@ -132,10 +133,6 @@ router.post("/deleteLink", authenticate, async function(req, res)
                 user.links.pull(link._id);
                 user.save();
             }
-        }
-        if(link)
-        {
-            link.delete();
         }
         res.status(200).json({status: 'success', data: link});
     }
