@@ -18,9 +18,10 @@ router.post('/short',authenticate , async function(req, res)
             res.status(400).json({status: 'error', message: 'URL is required'});
             return;
         }
-        if(await Link.findOne({originalUrl: originalUrl}))
+        let origin = await Link.findOne({originalUrl: originalUrl});
+        if(origin !== null)
         {
-            res.status(400).json({status: 'error', message: 'URL already exists'});
+            res.status(200).json({status: 'success', data: origin});
             return;
         }
         if(!isUrl(originalUrl))
