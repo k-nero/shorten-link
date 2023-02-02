@@ -201,7 +201,7 @@ Project Link: [https://github.com/thanhplassma/shorten-link](https://github.com/
 [stars-url]: https://github.com/thanhplassma/shorten-link/stargazers
 [issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
 [issues-url]: https://github.com/thanhplassma/shorten-link/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/thanhplassma/shorten-link.svg?style=for-the-badge
 [license-url]: https://github.com/thanhplassma/shorten-link/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
