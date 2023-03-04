@@ -26,6 +26,10 @@ module.exports = {
 		"semi": [
 			"error",
 			"always"
-		]
+		],
+		"brace-style": [
+			1,
+			"allman"
+		],
 	}
 };

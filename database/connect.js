@@ -1,6 +1,8 @@
+/* eslint-disable no-undef */
 const mongoose = require("mongoose");
 
-module.exports = (app, url) => {
+module.exports = (app, url) =>
+{
 	mongoose?.connect(url, {
 		useUnifiedTopology: true,
 		useNewUrlParser: true
@@ -9,12 +11,15 @@ module.exports = (app, url) => {
 	process.on("SIGINT", cleanup);
 	process.on("SIGTERM", cleanup);
 	process.on("SIGHUP", cleanup);
-	if (app) {
+	if (app)
+	{
 		app.set("mongoose", mongoose);
 	}
 };
-function cleanup () {
-	mongoose?.connection.close(function () {
+function cleanup ()
+{
+	mongoose?.connection.close(function ()
+	{
 		process.exit(0);
 	});
 }

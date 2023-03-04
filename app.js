@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require("express");
 require("dotenv").config();
 const path = require("path");
@@ -20,7 +21,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // cross-origin resource sharing
-app.use(function (req, res, next) {
+app.use(function (req, res, next)
+{
 	res.setHeader("Access-Control-Allow-Origin", process.env.CORS_URL);
 	res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE");
 	res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
